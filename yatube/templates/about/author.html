@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static%}
+
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+  <div class="jumbotron jumbotron-fluid">
+    <h1 class="display-4">Hello, world!</h1>
+    <p class="lead">Меня зовут Данила Кушлевич, я автор этого проекта</p>
+    <hr class="my-4">
+    <p>Ссылки на соцсети:</p>
+    <p class="lead">
+      <a class="navbar-brand" href="https://t.me/dkushlevich">
+        <img src="{% static 'img/telegram_logo.png' %}" width="50" height="50" class="d-inline-block align-top" alt="">
+      </a>
+      <a class="navbar-brand" href="https://github.com/dkushlevich">
+        <img src="{% static 'img/github_logo.png' %}" width="50" height="50" class="d-inline-block align-top" alt="">
+      </a>
+      <a class="navbar-brand" href="https://www.instagram.com/danilakushlevich/">
+        <img src="{% static 'img/inst_logo.png' %}" width="50" height="50" class="d-inline-block align-top" alt="">
+      </a>
+    </p>
+  </div>
+
+
+
+{% endblock %}

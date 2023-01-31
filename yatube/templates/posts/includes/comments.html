@@ -1,0 +1,39 @@
+
+{% if user.is_authenticated %}
+  <div class="card my-4">
+    <h5 class="card-header">{{form.text.label}}:</h5>
+    <div class="card-body">
+      <form method="post" action="{% url 'posts:add_comment' post.id %}">
+        {% csrf_token %}
+        {% load user_filters %}   
+        <div class="form-group mb-2">
+          {{ form.text|addclass:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-dark">Отправить</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+<h3>Комментарии</h3>
+{% for comment in comments %}
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-5 col-md-6 col-12 pb-4">
+          <div class="comment mt-4 text-justify">
+              <h4><a href="{% url 'posts:profile' comment.author.username %}" class="link-secondary">
+                {{ comment.author.username }}
+              </a></h4>
+              <span>{{comment.pub_date}}</span>
+              <br>
+              <p><h5>{{comment.text}}</h5></p>
+          </div>
+      </div>
+    </div>
+    <div class="row-inverse">
+      {% include "posts/includes/comment_like.html"%}
+    </div>
+  </div>
+
+{% endfor %} 

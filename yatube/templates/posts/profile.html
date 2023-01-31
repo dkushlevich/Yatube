@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Профайл пользователя {{ author.get_full_name }}
+{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert">
+        {{message}} <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="link-secondary">ВОТ ЖЕ ОНА<a/>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="container">
+    <h1>Все посты пользователя {{author.get_full_name}}</h1>
+    <h3>Всего постов: {{count_posts}} </h3>
+    {% if user.is_authenticated %}
+      {% if user != author%}
+        {% if following %}
+          <a
+            class="btn btn-lg btn-light"
+            href="{% url 'posts:profile_unfollow' author.username %}" role="button"
+          >
+            Отписаться
+          </a>
+        {% else %}
+          <a
+            class="btn btn-lg btn-dark"
+            href="{% url 'posts:profile_follow' author.username %}" role="button"
+          >
+            Подписаться
+          </a>
+        {% endif %}
+      {%endif%}
+    {%endif%}
+    {% for post in page_obj %}
+      <article>
+        {% include "posts/includes/single_post.html" %}
+      </article>
+    {% endfor %}
+  </div>
+  {% include 'posts/includes/paginator.html' %}
+{%endblock%}

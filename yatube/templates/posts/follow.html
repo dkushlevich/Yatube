@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Избранные авторы{% endblock %}
+{% block content %}
+  <div class="container">
+    {% include "posts/includes/switcher.html" %}
+    <h1>Лента</h1>
+    {%if not page_obj%}
+    <h5>Подпишитесь на интересующих вас авторов, чтобы увидеть их посты</h5>
+    {%endif%}
+    {% for post in page_obj%}
+      {% include "posts/includes/single_post.html" %}
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+    {% endfor %}
+    {% include "posts/includes/paginator.html" %}
+  </div>
+{% endblock %}

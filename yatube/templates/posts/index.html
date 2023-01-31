@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Последние обновления на сайте
+{% endblock %}
+
+{% block content %}
+  
+    {% include 'posts/includes/switcher.html' %}
+    <h1>Последние обновления на сайте</h1>
+    <div class="container">
+      <form class="d-inline-flex p-2" role="search" method="GET" action="" id="searchform">
+        <input class="form-control me-2" id="searchbox" name="search" type="text" placeholder="Поиск по постам ..." value="{{ request.GET.q }}" aria-label="Search">
+        <button class="btn btn-warning" type="submit">Поиск</button>
+      </form>
+      <br>
+      <br>
+    {% for post in page_obj %}
+      <article>
+        {% include "posts/includes/single_post.html" %}
+      </article>
+    {% endfor %}
+
+    {% include 'posts/includes/paginator.html' %}
+    
+  </div>
+{% endblock %}

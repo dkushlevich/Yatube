@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}
+  Профайл пользователя {{ user.first_name }} {{user.last_name}}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <aside class="col-12 col-md-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          Дата публикации: <p>{{post.pub_date}}</p>
+        </li>
+        {% if post.group %}
+          <li class="list-group-item">
+            <p><a href="{% url "posts:group_list" post.group.slug %}" class="btn btn-outline-secondary btn">Группа: {{post.group}}</a></p>
+          </li>
+        {% endif %}
+        <li class="list-group-item">
+          
+            <a href="{% url "posts:profile" post.author %}" class="btn btn-outline-secondary btn">
+            Автор 
+            {%if post.author.first_name%} 
+              {{post.author.get_full_name}}
+            {%else%} 
+              {{user.username}}
+            {% endif %}
+            (всего постов: {{count_posts}}) 
+            </a>
+        </li>
+        <li class="list-group-item">
+          <a href={% url "posts:profile" post.author.username %} class="btn btn-outline-secondary btn" >Все посты пользователя</a>
+        </li>
+        {%if post.author.username == user.username %}
+          <li class="list-group-item">
+            <a href ="{% url 'posts:post_edit' post.pk %}" class="btn btn-outline-secondary btn">Редактировать пост</a>
+          </li>
+          <li class="list-group-item">
+            <a href="{% url 'posts:delete_post' post.id %}" class="btn btn-danger">Удалить пост</a>
+          </li>
+        {%endif%}
+      </ul>
+    </aside>
+    <style>
+      .blue-border {border-left:solid 1px grey; padding-left:20px; margin-left: auto;
+        margin-right: auto;
+        width: 50em;
+        display: block}
+    </style>
+    <article class="blue-border col-12 col-md-9">
+      {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+        <img class="card-img my-2" src="{{ im.url }}">
+      {% endthumbnail %}
+      {{post.text}}
+      <br>
+      <div style="float:right">
+        {% include "posts/includes/post_like.html" %}
+      </div>
+    </article>
+
+    {% include 'posts/includes/comments.html' %}
+
+  </div>
+
+{%endblock%}
