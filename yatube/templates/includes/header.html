@@ -1,64 +1,58 @@
 {% load static %}
 {% with request.resolver_match.view_name as view_name %}
 
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light " style="background-color: #FFCC00">
-    
     <div class="container">
-      
-      <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span style="color:red">Ya</span><class style = "color:black">tube
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarContent">
-        
-        <ul class="navbar-nav nav-pills me-auto mb-4 mb-lg-0">
-
-          <li class="nav-item">
-            <a class="nav-link {% if view_name  == 'about:author' %} active" style="background-color: black; font-color:yellow{% endif %}"
-              href="{% url 'about:author' %}">{% if view_name  == 'about:author' %}<font color="white">Об авторе</font>{%else%}Об авторе{% endif %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link link-dark{% if view_name  == 'about:tech' %} active" style="background-color:black{% endif %}"
-              href="{% url 'about:tech' %}">{% if view_name  == 'about:tech' %}<font color="white">Технологии</font>{%else%}Технологии{% endif %}</a>
-          </li>
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link link-dark {% if view_name  == 'posts:post_create' %} active" style="background-color: black{% endif %}"
-                href="{% url 'posts:post_create' %}">{% if view_name  == 'posts:post_create' %}<font color="white">Новая запись</font>{%else%}Новая запись{% endif %}</a>
-            <li class="nav-item">
-              <a class="nav-link link-dark {% if view_name  == 'users:password_change'%} active" style="background-color: black{% endif %}"
-                href="{% url 'users:password_change' %}">{% if view_name  == 'users:password_change' %}<font color="white">Изменить пароль</font>{%else%}Изменить пароль{% endif %}</a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link link-dark"
-              href="{% url 'posts:profile' user.username %} ">{{ user.username }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="navbar-brand" href="{% url 'users:logout' %}">
-                <img src="{% static 'img/logout.png' %}" width="20" height="20" class="d-inline-block align-bottom" alt="">
-              </a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="nav-link link-dark{% if view_name  == 'users:signup' %} active" style="background-color: black{% endif %}"
-                href="{% url 'users:signup' %}">{% if view_name  == 'users:signup' %}<font color="white">Регистрация</font>{%else%}Регистрация{% endif %}</a>
-            </li>
-            <li class="nav-item">
-              <a class="navbar-brand" href="{% url 'users:login' %}">
-                <img src="{% static 'img/login.png' %}" width="30" height="30" class="d-inline-block align" alt="">
-              </a>
-            </li>
-          {% endif %}
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a class="navbar-brand" href="{% url 'posts:index' %}">
+          <img src="{% static 'img/logo.png' %}" width="50" height="50" class="d-inline-block align-top" alt="">
+        </a>
+  
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a class="nav-link link-dark"
+            href="{% url 'about:author' %}">{% if view_name  != 'about:author' %}<font color="grey">Об авторе</font>{%else%}Об авторе{% endif %}</a></li>
+          <li><li class="nav-item">
+            <a class="nav-link link-dark"
+              href="{% url 'about:tech' %}">{% if view_name  != 'about:tech' %}<font color="grey">Технологии</font>{%else%}Технологии{% endif %}</a>
+          </li></li>
+          <li><li class="nav-item">
+            {% if user.is_authenticated %}
+            <a class="nav-link link-dark"
+              href="{% url 'posts:post_create' %}">{% if view_name  != 'posts:post_create' %}<font color="grey">Новая запись</font>{%else%}Новая запись{% endif %}</a>
+          </li></li>
+            {% endif %}
         </ul>
+        {% if view_name  == 'posts:index' or view_name == 'posts:profile' or view_name == 'posts:group_list' or view_name == 'posts:follow_index'  %}
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="GET" action="" id="searchform">
+          <input class="form-control me-2" id="searchbox" name="search" type="text" placeholder="Поиск по странице ..." value="{{ request.GET.q }}" aria-label="Search">
+        </form>
+        {%endif%}
+        {% if not user.is_authenticated %}
+        <div class="text-end">
+          <a class="btn btn-outline-secondary"href="{% url 'users:login' %}">Войти</a>
+  
+          <a class="btn btn-dark"href="{% url 'users:signup' %}">Регистрация</a>
+        </div>
+        {% else %}
+          <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle text-center" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{%if user.image%} {{user.image.url}} {%else%}{% static 'img/default_avatar.jpg' %}{%endif%}" alt="mdo" 
+            {% if view_name  == 'posts:index' or view_name == 'posts:profile' or view_name == 'posts:group_list' or view_name == 'posts:follow_index'  %}
+            width="40" height="40"
+            {%else%}
+            width="50" height="50"
+            {% endif %} 
+            class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-big dropdown-menu-dark" aria-labelledby="dropdownUser1" style="">
+            <li><h3 class="dropdown-header">{{user.username}}</h3></li>
+            <li><a class="dropdown-item" href="{% url 'users:profile' user.pk %}">Профиль</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:password_change' %}">Изменить пароль</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a>
+              </li>
+          </ul>
+        </div>
+        {% endif %}
       </div>
-
     </div>
-  </nav>
-
 {% endwith %}

@@ -1,36 +1,74 @@
 {% load thumbnail %}
+{% load static %}
 {% with request.resolver_match.view_name as view_name %}
-<nav class="navbar navbar-inverse">
+{% if forloop.first %}
+  <hr>
+{% endif %}
+
+<nav class="navbar">
+    <a class="navbar-brand" href="{% url 'posts:profile' post.author.username %}">
+      <img class="rounded-circle shadow-1-strong me-3"
+      src="{%if post.author.image%} {{post.author.image.url}} {%else%}{% static 'img/default_avatar.jpg' %}{%endif%}" alt="avatar" width="60"
+      height="60"/>
   Автор:
-    {%if post.author.first_name%} 
+    {%if post.author.first_name%}
       {{post.author.get_full_name}}
     {%else%} 
-      {{user.username}}
+      {{post.author.username}}
     {% endif %}
-    <br>
-    Дата публикации: {{ post.pub_date|date:"d E Y" }}
-  {% if view_name != 'posts:profile'%}
-  <a href="{% url "posts:profile" post.author %}" class="btn btn-outline-secondary btn-sm">
-    Все посты пользователя
   </a>
+  <div class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class ='nav-item'>
+    
+        {% if post.group and view_name != 'posts:group_list'%}
+          <a href="{% url "posts:group_list"  post.group.slug %}" class="btn btn-outline-secondary btn-sm">
+            Группа:{{post.group.title}}
+        </a>
+    {% endif %}
+      </li>
+      
+    </ul>
+  </div>
+  <ul class="nav">
+    
+</li>
+  <li class ='nav-item'>
+    <small>Дата публикации: {{ post.pub_date|date:"d E Y" }}</small>
+  </li>
+  {% if view_name != 'posts:profile'%}
   {% endif %}
+</ul>
 </nav>
-<p>
-<div class="container-fluid">
+<style>
+  .text-justify { 
+   text-align: justify; /* Выравнивание по ширине */
+  }
+ </style>
+
+<div class="container-fluid py-4 text-justify">
   {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
     <img class="card-img my-2" src="{{ im.url }}">
   {% endthumbnail %}
   {{ post.text|linebreaksbr }}
 </div>
 </p>
-<a href="{% url "posts:post_detail" post.id  %}" class="btn btn-outline-secondary btn-sm">
-  Подробная информация
-</a>
-{% if post.group and view_name != 'posts:group_list'%}
-  <a href="{% url "posts:group_list"  post.group.slug %}" class="btn btn-outline-secondary btn-sm">
-          Все записи группы
-  </a>
-{% endif %}
+<nav class="navbar">
+  <div class="container">
+    <ul class="nav nav-pills">
+      <a href="{% url "posts:post_detail" post.id  %}" class="btn btn-outline-secondary btn-sm">
+        Подробная информация
+      </a>
+    </ul>
+    <a class="navbar-brand">
+     
+    {% include 'posts/includes/post_like.html' %}
+    </a>
+
+    
+  </div>
+</nav>
+
 {% if not forloop.last %}
   <hr>
 {% endif %}

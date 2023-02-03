@@ -3,8 +3,7 @@ from django.db import models
 
 from core.models import CreatedModel
 from yatube.settings import POST_STR_MULTIPLIER
-
-User = get_user_model()
+from users.models import User
 
 
 class Group(models.Model):
@@ -62,6 +61,7 @@ class Comment(CreatedModel):
     likes = models.ManyToManyField(User, related_name='like_comments')
 
     class Meta:
+        ordering = ['-pub_date']
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 

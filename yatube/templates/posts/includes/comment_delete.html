@@ -1,0 +1,26 @@
+{%load static%}
+<button type="submit" data-bs-toggle="modal" data-bs-target="#Delete{{comment.pk}}" class='btn'>
+  <img src="{% static 'img/delete.png' %}" width="16" height="16">
+  </button>
+
+  <!-- Модальное окно -->
+  <div class="modal fade" id="Delete{{comment.pk}}" tabindex="-1" aria-labelledby="Delete{{comment.pk}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="Delete{{comment.pk}}Label">Удаление комментария</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          Вы уверены, что хотите удалить комментарий {{comment}}?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+          <form action="{% url 'posts:delete_comment' pk=comment.pk %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-danger">Удалить</button>
+          </form> 
+        </div>
+      </div>
+    </div>
+  </div>

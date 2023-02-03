@@ -7,7 +7,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetView)
 from django.urls import path, reverse_lazy
 
-from users.views import SignUp
+from users.views import SignUp, UserProfileView
 from yatube.settings import EMAIL_HOST_USER
 
 app_name = 'users'
@@ -23,6 +23,9 @@ urlpatterns = [
         'login/',
         LoginView.as_view(template_name='users/login.html'),
         name='login'
+    ),
+    path(
+        "profile/<int:pk>/", UserProfileView.as_view(), name="profile"
     ),
     path(
         'password_change/',

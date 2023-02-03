@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Избранные авторы{% endblock %}
 {% block content %}
-  <div class="container">
+  <div class="container py-5">
     {% include "posts/includes/switcher.html" %}
     <h1>Лента</h1>
     {%if not page_obj%}
@@ -9,9 +9,6 @@
     {%endif%}
     {% for post in page_obj%}
       {% include "posts/includes/single_post.html" %}
-      {% if not forloop.last %}
-        <hr>
-      {% endif %}
     {% endfor %}
     {% include "posts/includes/paginator.html" %}
   </div>

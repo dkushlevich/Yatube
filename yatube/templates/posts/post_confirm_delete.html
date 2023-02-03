@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+
+{%block content%}
+<div class="container py-5">
+	<form method="post" class="card">
+		{% csrf_token %}
+		<h2>Удалениe поста</h2>
+		<p>Вы уверены, что хотите удалить пост "{{post}}"?</p>
+		<p class="form-buttons">
+			<input type="submit" class="btn btn-primary" value="Delete">
+			<a href="" class="btn btn-outline">Cancel</a>
+		</p>
+	</form>
+</div>
+{%endblock content%}

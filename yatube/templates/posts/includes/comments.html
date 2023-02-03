@@ -1,39 +1,71 @@
 
-{% if user.is_authenticated %}
-  <div class="card my-4">
-    <h5 class="card-header">{{form.text.label}}:</h5>
-    <div class="card-body">
-      <form method="post" action="{% url 'posts:add_comment' post.id %}">
-        {% csrf_token %}
-        {% load user_filters %}   
-        <div class="form-group mb-2">
-          {{ form.text|addclass:"form-control" }}
-        </div>
-        <button type="submit" class="btn btn-dark">Отправить</button>
-      </form>
-    </div>
-  </div>
-{% endif %}
-<h3>Комментарии</h3>
-{% for comment in comments %}
-
-<section>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-5 col-md-6 col-12 pb-4">
-          <div class="comment mt-4 text-justify">
-              <h4><a href="{% url 'posts:profile' comment.author.username %}" class="link-secondary">
-                {{ comment.author.username }}
-              </a></h4>
-              <span>{{comment.pub_date}}</span>
-              <br>
-              <p><h5>{{comment.text}}</h5></p>
+{%load static%}
+  <section>
+    <div class="container my-5 py-2">
+      <div class="row d-flex justify-content-center">
+        <div class="">
+          
+            <div class="card-body p-4">
+              {% if user.is_authenticated %}
+              <h5>Ваш комментарий</h5>
+              <div class="card-body p-4">
+                    <p class="mb-0">
+                      
+                      <form method="post" action="{% url 'posts:add_comment' post.id %}">
+                        {% csrf_token %}
+                        {% load user_filters %}   
+                        <div class="form-group mb-2">
+                          {{ form.text|addclass:"form-control" }}
+                        </div>
+                        <button type="submit" class="btn btn-dark">Отправить</button>
+                      </form>
+                    </p>
+                  </div>
+                {%endif%}
+                {%if comments%}
+                  <p class="fw-light mb-4 pb-2">Последние комментарии, оставленные пользователями</p>
+                {%else%}
+                  <p class="fw-light mb-4 pb-2">Ваш комментарий будет первым</p>
+                {%endif%}
+            
+            {%for comment in comments%}
+            <style>
+              .text-justify { 
+               text-align: justify; /* Выравнивание по ширине */
+              }
+             </style>
+            <div class="card-body p-4">
+              <div class="d-flex text-justify">
+                <a class="navbar-brand" href="{% url 'posts:profile' post.author.username %}">
+                  <img class="rounded-circle shadow-1-strong me-3"
+                  src="{%if comment.author.image%} {{comment.author.image.url}} {%else%}{% static 'img/default_avatar.jpg' %}{%endif%}" alt="avatar" width="60"
+                  height="60"/>
+                </a>
+                <div>
+                  <h6 class="fw-bold mb-1">{%if comment.author.get_full_name%}{{comment.author.get_full_name}}{%else%}{{comment.author.username}}{%endif%}</h6>
+                  <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0">
+                      {{comment.pub_date}}
+                    </p>
+                    {%include 'posts/includes/comment_like.html'%}
+                    {%if user == comment.author %}
+                    <div class='text-end'>
+                      {%include 'posts/includes/comment_delete.html'%}
+                    </div> 
+                    {%endif%}
+                  </div>
+                  <p class="mb-0">
+                    {{comment.text}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {% if not forloop.last %}
+            <hr class="my-0" style="height: 1px;" />
+            {% endif %}
+            {%endfor%}
           </div>
+        </div>
       </div>
     </div>
-    <div class="row-inverse">
-      {% include "posts/includes/comment_like.html"%}
-    </div>
-  </div>
-
-{% endfor %} 
+  </section>

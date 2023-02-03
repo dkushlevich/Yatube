@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Профайл пользователя {{ author.get_full_name }}
+  Профайл пользователя {%if author.get_full_name%}{{author.get_full_name}}{%else%}{{author.username}}{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -12,10 +12,11 @@
       </div>
     {% endfor %}
   {% endif %}
-
-  <div class="container">
-    <h1>Все посты пользователя {{author.get_full_name}}</h1>
+    {% if page_obj%}
+    <h1>Все посты пользователя {%if author.get_full_name%}{{author.get_full_name}}{%else%}{{author.username}}
+    {% endif %}</h1>
     <h3>Всего постов: {{count_posts}} </h3>
+    
     {% if user.is_authenticated %}
       {% if user != author%}
         {% if following %}
@@ -35,11 +36,14 @@
         {% endif %}
       {%endif%}
     {%endif%}
+    <br>
+    {%else %}
+    <h1>У пользователя {%if post.author.first_name%}{{post.author.get_full_name}}{%else%}{{post.author.username}}{%endif%} нет постов</h1>
+    {%endif%}
     {% for post in page_obj %}
       <article>
         {% include "posts/includes/single_post.html" %}
       </article>
     {% endfor %}
-  </div>
-  {% include 'posts/includes/paginator.html' %}
+    {% include 'posts/includes/paginator.html' %}
 {%endblock%}
