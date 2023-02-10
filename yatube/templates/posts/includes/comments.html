@@ -28,7 +28,7 @@
                   <p class="fw-light mb-4 pb-2">Ваш комментарий будет первым</p>
                 {%endif%}
             
-            {%for comment in comments%}
+            {%for comment in comments %}
             <style>
               .text-justify { 
                text-align: justify; /* Выравнивание по ширине */
@@ -36,7 +36,7 @@
              </style>
             <div class="card-body p-4">
               <div class="d-flex text-justify">
-                <a class="navbar-brand" href="{% url 'posts:profile' post.author.username %}">
+                <a class="navbar-brand" href="{% url 'posts:profile' comment.author.username %}">
                   <img class="rounded-circle shadow-1-strong me-3"
                   src="{%if comment.author.image%} {{comment.author.image.url}} {%else%}{% static 'img/default_avatar.jpg' %}{%endif%}" alt="avatar" width="60"
                   height="60"/>

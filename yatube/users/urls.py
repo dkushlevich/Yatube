@@ -7,8 +7,8 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetView)
 from django.urls import path, reverse_lazy
 
-from users.views import SignUp, UserProfileView
-from yatube.settings import EMAIL_HOST_USER
+from users.views import SignUp, UserProfileView, IntroView
+# from yatube.settings import EMAIL_HOST_USER
 
 app_name = 'users'
 
@@ -45,7 +45,7 @@ urlpatterns = [
         PasswordResetView.
         as_view(success_url=reverse_lazy('users:password_reset_done'),
                 template_name='users/password_reset_form.html',
-                from_email=EMAIL_HOST_USER,
+                # from_email=EMAIL_HOST_USER,
                 email_template_name='users/password_reset_email.html'),
         name='password_reset_form'
     ),
@@ -68,4 +68,5 @@ urlpatterns = [
         as_view(template_name='users/password_reset_complete.html'),
         name='password_reset_complete'
     ),
+    path('intro', IntroView.as_view(), name='intro')
 ]

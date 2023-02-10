@@ -1,7 +1,7 @@
 {%load static%}
 <button type="submit" data-bs-toggle="modal" data-bs-target="#Delete{{comment.pk}}" class='btn'>
   <img src="{% static 'img/delete.png' %}" width="16" height="16">
-  </button>
+</button>
 
   <!-- Модальное окно -->
   <div class="modal fade" id="Delete{{comment.pk}}" tabindex="-1" aria-labelledby="Delete{{comment.pk}}" aria-hidden="true">
@@ -19,7 +19,9 @@
           <form action="{% url 'posts:delete_comment' pk=comment.pk %}" method="POST">
             {% csrf_token %}
             <button class="btn btn-danger">Удалить</button>
+        </form> 
           </form> 
+        </form> 
         </div>
       </div>
     </div>

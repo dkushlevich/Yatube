@@ -90,7 +90,7 @@ class ProfileView(ListView):
         if self.request.user.is_authenticated:
             context['following'] = Follow.objects.filter(
                 user=self.request.user, author=user
-            ).exists()
+            )
 
         return context
 
@@ -204,10 +204,10 @@ class AddFollowView(LoginRequiredMixin, View):
 
 class UnfollowView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        user = request.user
-        author = User.objects.get(username=kwargs['username'])
-        follow = Follow.objects.filter(user=user, author=author)
-        if follow.exists():
+        follow = get_object_or_404(
+            Follow, user=request.user, author__username=self.kwargs['username']
+        )
+        if follow:
             follow.delete()
         return redirect('posts:profile', username=kwargs['username'])
 

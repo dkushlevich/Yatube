@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -37,6 +38,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 CACHES = {
@@ -116,11 +122,11 @@ AUTH_USER_MODEL = "users.User"
 
 # Отправка письма Яндекс-почта
 
-EMAIL_HOST = "smtp.yandex.com"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "kushlevichd@yandex.ru"
-EMAIL_HOST_PASSWORD = "Gulyaeva2109"
-EMAIL_USE_SSL = True
+# EMAIL_HOST = "smtp.yandex.com"
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = ""
+# EMAIL_HOST_PASSWORD = ""
+# EMAIL_USE_SSL = True
 
 # Отправка письма в папку проекта
 
@@ -129,7 +135,7 @@ EMAIL_USE_SSL = True
 
 # Отправка письма в консоль
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 PAGE_VIEW_MULTIPLIER: int = 10
 
 POST_STR_MULTIPLIER: int = 15
